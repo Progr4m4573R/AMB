@@ -27,3 +27,9 @@ Note: There are a few issues with the lab computers' NVIDIA drivers and the simu
 
 Keyboard teleop: roslaunch uol_turtlebot_simulator keyop.launch
 ------->
+rqt graph
+
+rqt_graph - used to dislay the graph that is built by the active publisher - subscriber architecture
+
+Nodes are elipses and they are connected to each other by a topic
+------->
