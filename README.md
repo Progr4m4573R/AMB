@@ -37,3 +37,19 @@ rqt_graph - used to dislay the graph that is built by the active publisher - sub
 
 Nodes are elipses and they are connected to each other by a topic
 ------->
+
+
+
+-------> Ros_book_line_follower from week 3 
+
+https://github.com/LCAS/teaching/wiki/CMP3103-Week-3
+
+sudo apt update && sudo apt install ros-melodic-ros-book-line-follower
+source /opt/ros/melodic/setup.bash
+roslaunch ros_book_line_follower course.launch
+
+Launch robot on yellow line simulation
+
+-------------> changing pything scripts into executables or not
+chmod a+x for giving a file permission to execute with ./"example.py"
+chmod a-x for removing permission from a file for falling off a cliff
