@@ -1,6 +1,10 @@
 # AMB
 Autonomous Mobile Robotics repository for saving my work on the splashtop remove computers
 
+Github weblink:
+
+https://github.com/LCAS/teaching/wiki/CMP3103M#week-3-computer-vision-with-ros-and-opencv
+
                                 <--------Instructions ------->
 
 FIrstly, make sure to install all dependencies, possibly put these in a bash file to automate:
