@@ -31,9 +31,11 @@ rosnode list
 rostopic list
 rosservice list
 rqt_graph
-
-
-
+Rostopic pub 
+Rostopic info  
+rosservice list  
+Rosmsg 
+rossrv 
 
 
                                 <-----------(For splashtop computers)--------> 
