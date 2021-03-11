@@ -1,11 +1,11 @@
-# AMB
+# AMR
 Autonomous Mobile Robotics repository for saving my work on the splashtop remove computers
 
 Github weblink:
 
 https://github.com/LCAS/teaching/wiki/CMP3103M#week-3-computer-vision-with-ros-and-opencv
 
-                                <--------Instructions ------->
+                                <--------Instructions for splashtop ------->
 
 FIrstly, make sure to install all dependencies, possibly put these in a bash file to automate:
 
@@ -24,8 +24,20 @@ Launching the Turtlebot simulator:
 roslaunch uol_turtlebot_simulator simple.launch
 
 
-------->
-(For splashtop computers)
+             <---------------------------------ROS Commandline commands and help--------------------------->
+                                    always use [Tab] and -h when working on the command line!
+roscore
+rosnode list
+rostopic list
+rosservice list
+rqt_graph
+
+
+
+
+
+                                <-----------(For splashtop computers)--------> 
+
 
 Note: There are a few issues with the lab computers' NVIDIA drivers and the simulator. It may regularly fail initially. Just press [Ctrl-C] in the terminal and try again. This is fixed in more recent Ubuntu versions, but we have to live with the slight annoyance for now, we're afraid.
 
@@ -40,7 +52,7 @@ Nodes are elipses and they are connected to each other by a topic
 
 
 
--------> Ros_book_line_follower from week 3 
+                              <------------Ros_book_line_follower from week 3 ------->
 
 https://github.com/LCAS/teaching/wiki/CMP3103-Week-3
 
