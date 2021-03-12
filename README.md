@@ -18,10 +18,18 @@ Then run to ensure that everything necessary for the workshop is installed:
 
 sudo apt install ros-melodic-uol-cmp3103m
 
-
+	                    <--Launch different simulations-->
 Launching the Turtlebot simulator:
 
-roslaunch uol_turtlebot_simulator simple.launch
+roslaunch uol_turtlebot_simulator simple.launch - launches the simplest version of the simulation
+
+roslaunch uol_turtlebot_simulator turtlebot-rviz.launch - allows us to see what the robot sees using point clouds that subscribes to the laser sensor topic which is published to by the laser sensor.
+
+Available at: https://github.com/LCAS/teaching/wiki/first-turtlebot-tutorial
+
+Keyboard teleop: roslaunch uol_turtlebot_simulator keyop.launch - used to enable commandline control of the turtlebot, same code can also be edited to automate any of the robots motions such as rotating or simple movement. 
+Available at: https://github.com/LCAS/teaching/wiki/CMP3103-Week-2
+			            <------------------->
 
 
              <---------------------------------ROS Commandline commands and help--------------------------->
