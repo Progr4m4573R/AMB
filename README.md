@@ -40,16 +40,17 @@ roslaunch ros_book_line_followe course.launch - launches the line follower simul
              <---------------------------------ROS Commandline commands and help--------------------------->
                                     always use [Tab] and -h when working on the command line!
 roscore
-rosnode list
-rostopic list
+rosnode list – lists a number of nodes running on the system just by starting off the simulation
+rostopic list -  lists the names of all active topics that are currently advertised in the system.
 rosservice list
 rqt_graph
 Rostopic pub 
 Rostopic info  
 rosservice list  
-Rosmsg 
+Rosmsg list - displays a list of all predefined msg types
 rossrv 
 
+Try adding -h or --help to any command you want additonal information about(shows sub commands)
 
                                 <-----------(For splashtop computers)--------> 
 
@@ -65,7 +66,8 @@ rqt_graph - used to dislay the graph that is built by the active publisher - sub
 Nodes are elipses and they are connected to each other by a topic
 ------->
 
-
+                              <---------------Week 2 notes---------------->
+rostopic list - h: shows the optional commands for different things such as active publishers and sucscribers.
 
                               <------------Ros_book_line_follower from week 3 ------->
 
