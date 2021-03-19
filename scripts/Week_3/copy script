@@ -1,0 +1,3 @@
+echo quick code if you want to copy stuff into your own folders from the teaching repository
+cp follower_line_finder.py ~/Desktop/AMR/scripts/Week_3 -v
+

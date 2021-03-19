@@ -33,7 +33,7 @@ roslaunch uol_turtlebot_simulator keyop.launch - used to enable commandline cont
 
 Available at: https://github.com/LCAS/teaching/wiki/CMP3103-Week-2
 
-roslaunch ros_book_line_followe course.launch - launches the line follower simulation which has somesignificant additons that make it easier for us to simulate the line the robot will follow as well as edit how the robot will react to this line.
+roslaunch ros_book_line_follower course.launch - launches the line follower simulation which has somesignificant additons that make it easier for us to simulate the line the robot will follow as well as edit how the robot will react to this line.
 			            <------------------->
 
 
