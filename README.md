@@ -18,7 +18,10 @@ Then run to ensure that everything necessary for the workshop is installed:
 
 sudo apt install ros-melodic-uol-cmp3103m
 
-
+             <-------------change github remote url for ease of access --------------->
+https://docs.github.com/en/github/authenticating-to-github/checking-for-existing-ssh-keys
+https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+https://docs.github.com/en/github/getting-started-with-github/managing-remote-repositories
 
 	                    <--Launch different simulations-->
 Launching the Turtlebot simulator:
@@ -27,26 +30,18 @@ roslaunch uol_turtlebot_simulator simple.launch - launches the simplest version 
 
 roslaunch uol_turtlebot_simulator turtlebot-rviz.launch - allows us to see what the robot sees using point clouds that subscribes to the laser sensor topic which is published to by the laser sensor.
 
-Available at: https://github.com/LCAS/teaching/wiki/first-turtlebot-tutorial
-
-roslaunch uol_turtlebot_simulator keyop.launch - used to enable commandline control of the turtlebot, same code can also be edited to automate any of the robots motions such as rotating or simple movement. 
-
-Available at: https://github.com/LCAS/teaching/wiki/CMP3103-Week-2
-
-roslaunch ros_book_line_follower course.launch - launches the line follower simulation which has somesignificant additons that make it easier for us to simulate the line the robot will follow as well as edit how the robot will react to this line.
-
-HELPFUL TIP
-typing roslaunch uol_turtle_bot-simulator and pressing tab twice will show a list of all available maps
+Available at: https://github.com/LCAS/teaching/wiki/first-turtlebot-tutorial.commaps
 			            <------------------->
 
 
-             <---------------------------------ROS Commandline commands and help--------------------------->
+             <-----------------------ROS Commandline commands and help----------------------->
                                     always use [Tab] and -h when working on the command line!
 roscore
 rosnode list – lists a number of nodes running on the system just by starting off the simulation
 rostopic list -  lists the names of all active topics that are currently advertised in the system.
 rosservice list
 rqt_graph
+rqt_image_view
 Rostopic pub 
 Rostopic info  
 rosservice list  
