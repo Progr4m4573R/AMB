@@ -8,7 +8,7 @@ Created on Wed Jan 28 15:40:31 2015
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
-
+from math import radians
 
 class Receiver:
 
@@ -23,9 +23,12 @@ class Receiver:
         # print len(incoming_data.ranges)
         if incoming_data.ranges[320] < 1.0:
             t = Twist()
-            t.angular.z = 0.3
+            t.linear.x = 0
+            t.angular.z = radians(90);#turn right at this speed
             self.p.publish(t)
 
+
+        #go forwards
         elif incoming_data.ranges[320] > 1.0:
             t = Twist()
             t.linear.x = 0.3
