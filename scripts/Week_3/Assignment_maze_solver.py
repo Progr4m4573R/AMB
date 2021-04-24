@@ -42,13 +42,13 @@ class Receiver:
             t.angular.z = radians(90);#turn right at this speed
             self.p.publish(t)
 
-
         #go forwards
         elif incoming_data.ranges[320] > 1.0:
             t = Twist()
             t.linear.x = 0.3
             self.p.publish(t) 
-            #image_callback(self, msg)
+            #calling goal searcher code
+            self.image_callback
 
     #Looking for the goal 
     def image_callback(self, msg):
