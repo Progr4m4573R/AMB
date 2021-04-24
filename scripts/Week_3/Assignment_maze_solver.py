@@ -53,17 +53,30 @@ class Receiver:
     #Looking for the goal 
     def image_callback(self, msg):
         cv2.namedWindow("window", 1)
-        image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        lower_yellow = numpy.array([10, 10, 10])# change this to detect green
-        upper_yellow = numpy.array([255, 255, 250])#this too
-        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')#open cv image that can be used by any open cv function
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)#converts that the robot sees to hsv
+
+        lower_green = numpy.array([50, 100, 100])#detect green
+        upper_green = numpy.array([70, 255, 255])#this too
+
+        lower_red = numpy.array([170, 100, 100])#detect red
+        upper_red = numpy.array([10, 255, 250])#this too
+
+        lower_blue = numpy.array([110, 50, 50])# detect blue
+        upper_blue = numpy.array([130, 255, 255])#this too
+
+
+        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)#look for a hsv value between the ranges...
         h, w, d = image.shape
         search_top = 3*h/4
         search_bot = 3*h/4 + 20
         mask[0:search_top, 0:w] = 0
         mask[search_bot:h, 0:w] = 0
         M = cv2.moments(mask)
+        
+        #if you see red do something
+
+        #if you see green go to it
         if M['m00'] > 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -76,6 +89,12 @@ class Receiver:
             self.cmd_vel_pub.publish(self.twist)
         cv2.imshow("window", image)
         cv2.waitKey(3)
+
+    #if robot sees red do this, if green do this , if blue do this
+    def colour_check(hsv_image):
+        if hsv_image is green:
+        if hsv_image is blue:
+        if hsv_image is red:
 
 rospy.init_node('receiver')
 rec = Receiver()
