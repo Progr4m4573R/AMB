@@ -74,9 +74,7 @@ class Receiver:
         mask[search_bot:h, 0:w] = 0
         M = cv2.moments(mask)
         
-        #if you see red do something
 
-        #if you see green go to it
         if M['m00'] > 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -91,10 +89,13 @@ class Receiver:
         cv2.waitKey(3)
 
     #if robot sees red do this, if green do this , if blue do this
-    def colour_check(hsv_image):
-        if hsv_image is green:
-        if hsv_image is blue:
-        if hsv_image is red:
+    def colour_check(lower, upper):
+        #red
+        if lower is [170, 100, 100] and upper is [10, 255, 250]:
+        #blue
+        if lower is [110, 50, 50] and upper is [130, 255, 255]:
+        #green
+        if lower is [50, 100, 100] and upper is [70, 255, 255]:
 
 rospy.init_node('receiver')
 rec = Receiver()
