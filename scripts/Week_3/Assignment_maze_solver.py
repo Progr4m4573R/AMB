@@ -56,7 +56,7 @@ class Receiver:
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')#open cv image that can be used by any open cv function
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)#converts that the robot sees to hsv
 
-        lower_green = numpy.array([50, 100, 100])#detect green
+        lower_green = numpy.array([50, 100, 100])#detect green #hue, saturation and value
         upper_green = numpy.array([70, 255, 255])#this too
 
         lower_red = numpy.array([170, 100, 100])#detect red
@@ -89,13 +89,13 @@ class Receiver:
         cv2.waitKey(3)
 
     #if robot sees red do this, if green do this , if blue do this
-    def colour_check(lower, upper):
+    #def colour_check(lower, upper):
         #red
-        if lower is [170, 100, 100] and upper is [10, 255, 250]:
+        #if lower is [170, 100, 100] and upper is [10, 255, 250]:
         #blue
-        if lower is [110, 50, 50] and upper is [130, 255, 255]:
+        #if lower is [110, 50, 50] and upper is [130, 255, 255]:
         #green
-        if lower is [50, 100, 100] and upper is [70, 255, 255]:
+        #if lower is [50, 100, 100] and upper is [70, 255, 255]:
 
 rospy.init_node('receiver')
 rec = Receiver()
