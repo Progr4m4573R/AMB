@@ -1,4 +1,9 @@
 #Finding HSV Values 
 https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html
+
 https://medium.com/programming-fever/how-to-find-hsv-range-of-an-object-for-computer-vision-applications-254a8eb039fc
+
 https://stackoverflow.com/questions/10948589/choosing-the-correct-upper-and-lower-hsv-boundaries-for-color-detection-withcv/48367205#48367205
+
+#used this to try out how changing h, s and v values affect the robot's ability to see.
+https://alloyui.com/examples/color-picker/hsv.html

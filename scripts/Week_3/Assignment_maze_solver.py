@@ -56,14 +56,14 @@ class Receiver:
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')#open cv image that can be used by any open cv function
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)#converts that the robot sees to hsv
 
-        lower_green = numpy.array([50, 100, 100])#detect green #hue, saturation and value
-        upper_green = numpy.array([70, 255, 255])#this too
+        lower_green = numpy.array([50, 100, 50])#detect green #hue, saturation and value,value has to be lower than 100 or image will be black
+        upper_green = numpy.array([255, 255, 255])#this too
 
-        lower_red = numpy.array([170, 100, 100])#detect red
-        upper_red = numpy.array([10, 255, 250])#this too
+        lower_red = numpy.array([0, 100, 50])#detect red
+        upper_red = numpy.array([255, 255, 255])#this too
 
-        lower_blue = numpy.array([110, 50, 50])# detect blue
-        upper_blue = numpy.array([130, 255, 255])#this too
+        lower_blue = numpy.array([230, 100, 50])# detect blue
+        upper_blue = numpy.array([255, 255, 255])#this too
 
 
         mask = cv2.inRange(hsv, lower_yellow, upper_yellow)#look for a hsv value between the ranges...
