@@ -1,9 +1,14 @@
-#Finding HSV Values 
+#Finding HSV Values example in python
 https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html
 
+#Simple Explanation of hsv values on medium
 https://medium.com/programming-fever/how-to-find-hsv-range-of-an-object-for-computer-vision-applications-254a8eb039fc
 
+#Using a map to get the hsv values 
 https://stackoverflow.com/questions/10948589/choosing-the-correct-upper-and-lower-hsv-boundaries-for-color-detection-withcv/48367205#48367205
 
 #used this to try out how changing h, s and v values affect the robot's ability to see.
 https://alloyui.com/examples/color-picker/hsv.html
+
+#Wikipdeia information for broader understanding
+https://en.wikipedia.org/wiki/HSL_and_HSV
