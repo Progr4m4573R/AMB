@@ -58,7 +58,7 @@ class Receiver:
         lower_green = numpy.array([50, 100, 50])#detect green #hue, saturation and value,value has to be lower than 100 or image will be black
         upper_green = numpy.array([255, 255, 255])#this too
 
-        lower_red = numpy.array([0, 100, 50])#detect red
+        lower_red = numpy.array([100, 100, 100])#detect red
         upper_red = numpy.array([255, 255, 255])#this too
 
         lower_blue = numpy.array([230, 100, 50])# detect blue

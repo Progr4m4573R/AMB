@@ -21,7 +21,11 @@ class Follower:
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower_yellow = numpy.array([50, 100, 50])
         upper_yellow = numpy.array([255, 255, 255])
-        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
+        lower_blue = numpy.array([230, 100, 50])# detect blue
+        upper_blue = numpy.array([255, 255, 255])#this too
+        lower_red = numpy.array([100, 100, 100])#detect red
+        upper_red = numpy.array([255, 255, 255])#this too
+        mask = cv2.inRange(hsv, lower_red, upper_red)
         cv2.bitwise_and(image, image, mask=mask)
         cv2.imshow("window", mask)
         cv2.waitKey(3)
