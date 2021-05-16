@@ -61,13 +61,13 @@ class Receiver:
         lower_red = numpy.array([100, 100, 100])#detect red
         upper_red = numpy.array([255, 255, 255])#this too
 
-        lower_blue = numpy.array([230, 100, 50])# detect blue
+        lower_blue = numpy.array([0, 200, 100])# detect blue
         upper_blue = numpy.array([255, 255, 255])#this too
 
         #Create a threshold for detecting the colours in a certain range
         bgr_thresh = cv2.inRange(image,
-                            numpy.array((200, 230, 230)),
-                            numpy.array((255, 255, 255)))
+                            numpy.array((200, 230, 230)),#lower
+                            numpy.array((255, 255, 255)))#upper
         #look for a hsv value between the ranges--------------------------------------------------------------
         #Set a threshold for detecting red
         hsv_red_thresh = cv2.inRange(hsv,lower_red,upper_red)
@@ -79,7 +79,7 @@ class Receiver:
         # Instead find the contours in the mask generated from the
         # HSV image.
         _, hsv_contours, hierachy = cv2.findContours(
-            hsv_green_thresh.copy(),#find contours in red squares
+            hsv_blue_thresh.copy(),#find contours in red squares
             cv2.RETR_TREE,
             cv2.CHAIN_APPROX_SIMPLE)
 
