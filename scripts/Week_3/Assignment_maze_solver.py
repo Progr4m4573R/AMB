@@ -30,7 +30,13 @@ class Receiver:
 
         #Library Used to convert from ROS images to OpenCV
         self.bridge = cv_bridge.CvBridge()
+        
+        #Used to publis movement commands
+        self.cmd_vel_pub = rospy.Publisher('/mobile_base/commands/velocity', Twist,
+                                           queue_size=1)
 
+        #use to make the robot move
+        self.twist = Twist()
     #Obstacle avoidance using lasers
     def laser_callback(self, incoming_data):
         # print len(incoming_data.ranges) CHECK COLOUR BEFORE TURNING
@@ -49,6 +55,7 @@ class Receiver:
             self.image_callback
         elif incoming_data.ranges[320] > 1.0: #function that returns mask colours
             t.linear.x = 0  
+    
     #Looking for the goal 
     def image_callback(self, msg):
         cv2.namedWindow("window", 1)
@@ -64,7 +71,7 @@ class Receiver:
         lower_blue = numpy.array([0, 200, 100])# detect blue
         upper_blue = numpy.array([255, 255, 255])#this too
 
-        #Create a threshold for detecting the colours in a certain range
+        #Create a threshold for detecting the colours in a certain range, compare to hsv for deciding what to do when something is detected.
         bgr_thresh = cv2.inRange(image,
                             numpy.array((200, 230, 230)),#lower
                             numpy.array((255, 255, 255)))#upper
@@ -83,6 +90,16 @@ class Receiver:
             cv2.RETR_TREE,
             cv2.CHAIN_APPROX_SIMPLE)
 
+        _, hsv_contours, hierachy = cv2.findContours(
+            hsv_red_thresh.copy(),#find contours in red squares
+            cv2.RETR_TREE,
+            cv2.CHAIN_APPROX_SIMPLE)
+
+        _, hsv_contours, hierachy = cv2.findContours(
+            hsv_green_thresh.copy(),#find contours in red squares
+            cv2.RETR_TREE,
+            cv2.CHAIN_APPROX_SIMPLE)
+
         # in hsv_contours we now have an array of individual
         # closed contours (basically a polgon around the 
         # blobs in the mask). Let's iterate over all those found 
@@ -95,10 +112,10 @@ class Receiver:
             if a > 100.0:
                 cv2.drawContours(image, c, -1, (255, 0, 0), 3)
         print('====')
-
-
+        lower_yellow = numpy.array([10, 60, 70])
+        upper_yellow = numpy.array([255, 255, 255])
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
-        mask = cv2.inRange(hsv,lower_red,upper_red)
+        mask = cv2.inRange(hsv,lower_green,upper_green)
         h, w, d = image.shape
         search_top = 3*h/4
         search_bot = 3*h/4 + 20

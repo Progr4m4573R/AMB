@@ -25,6 +25,8 @@ class Follower:
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         lower_yellow = numpy.array([10, 10, 10])
         upper_yellow = numpy.array([255, 255, 250])
+        lower_green = numpy.array([50, 100, 125])#detect green #hue, saturation and value,value has to be lower than 100 or image will be black
+        upper_green = numpy.array([255, 255, 255])#this too
         mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
         h, w, d = image.shape
         search_top = 3*h/4

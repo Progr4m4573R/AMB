@@ -19,7 +19,7 @@ class Follower:
         cv2.namedWindow("window", 1)
         image = self.bridge.imgmsg_to_cv2(msg)
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        lower_yellow = numpy.array([50, 100, 50])
+        lower_yellow = numpy.array([10, 60, 70])
         upper_yellow = numpy.array([255, 255, 255])
         lower_blue = numpy.array([0, 200, 100])# detect blue
         upper_blue = numpy.array([255, 255, 255])#this too
