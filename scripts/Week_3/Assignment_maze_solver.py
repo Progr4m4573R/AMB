@@ -9,8 +9,6 @@ import cv2
 import cv_bridge
 import rospy
 from sensor_msgs.msg import Image
-
-
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from math import radians
@@ -35,21 +33,22 @@ class Receiver:
 
     #Obstacle avoidance using lasers
     def laser_callback(self, incoming_data):
-        # print len(incoming_data.ranges)
+        # print len(incoming_data.ranges) CHECK COLOUR BEFORE TURNING
         if incoming_data.ranges[320] < 1.0:
             t = Twist()
             t.linear.x = 0
             t.angular.z = radians(90);#turn right at this speed
             self.p.publish(t)
 
-        #go forwards
+        #go forwards if there is nothing in front
         elif incoming_data.ranges[320] > 1.0:
             t = Twist()
-            t.linear.x = 0.3
+            t.linear.x = 0
             self.p.publish(t) 
             #calling goal searcher code
             self.image_callback
-
+        elif incoming_data.ranges[320] > 1.0: #function that returns mask colours
+            t.linear.x = 0  
     #Looking for the goal 
     def image_callback(self, msg):
         cv2.namedWindow("window", 1)
@@ -65,16 +64,49 @@ class Receiver:
         lower_blue = numpy.array([230, 100, 50])# detect blue
         upper_blue = numpy.array([255, 255, 255])#this too
 
+        #Create a threshold for detecting the colours in a certain range
+        bgr_thresh = cv2.inRange(image,
+                            numpy.array((200, 230, 230)),
+                            numpy.array((255, 255, 255)))
+        #look for a hsv value between the ranges--------------------------------------------------------------
+        #Set a threshold for detecting red
+        hsv_red_thresh = cv2.inRange(hsv,lower_red,upper_red)
+        #Set a threshold for detecting green
+        hsv_green_thresh = cv2.inRange(hsv,lower_green,upper_green)
+        #Set a threshold for detecting blue
+        hsv_blue_thresh = cv2.inRange(hsv,lower_blue,upper_blue)
+        
+        # Instead find the contours in the mask generated from the
+        # HSV image.
+        _, hsv_contours, hierachy = cv2.findContours(
+            hsv_green_thresh.copy(),#find contours in red squares
+            cv2.RETR_TREE,
+            cv2.CHAIN_APPROX_SIMPLE)
 
-        mask = cv2.inRange(hsv, lower_yellow, upper_yellow)#look for a hsv value between the ranges...
+        # in hsv_contours we now have an array of individual
+        # closed contours (basically a polgon around the 
+        # blobs in the mask). Let's iterate over all those found 
+        # contours.
+        for c in hsv_contours:
+            # This allows to compute the area (in pixels) of a contour
+            a = cv2.contourArea(c)
+            # and if the area is big enough, we draw the outline
+            # of the contour (in blue)
+            if a > 100.0:
+                cv2.drawContours(image, c, -1, (255, 0, 0), 3)
+        print('====')
+
+
+        #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
+        mask = cv2.inRange(hsv,lower_red,upper_red)
         h, w, d = image.shape
         search_top = 3*h/4
         search_bot = 3*h/4 + 20
         mask[0:search_top, 0:w] = 0
         mask[search_bot:h, 0:w] = 0
-        M = cv2.moments(mask)
-        
-
+        M = cv2.moments(mask)  
+       
+        #Look for yellow
         if M['m00'] > 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -85,19 +117,14 @@ class Receiver:
             print self.twist.angular.z
 
             self.cmd_vel_pub.publish(self.twist)
+
+        
         cv2.imshow("window", image)
         cv2.waitKey(3)
 
-    #if robot sees red do this, if green do this , if blue do this
-    #def colour_check(lower, upper):
-        #red
-        #if lower is [170, 100, 100] and upper is [10, 255, 250]:
-        #blue
-        #if lower is [110, 50, 50] and upper is [130, 255, 255]:
-        #green
-        #if lower is [50, 100, 100] and upper is [70, 255, 255]:
 
 rospy.init_node('receiver')
 rec = Receiver()
 
 rospy.spin()
+cv2.destroyAllWindows()
