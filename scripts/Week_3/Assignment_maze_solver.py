@@ -46,15 +46,15 @@ class Receiver:
             t.angular.z = radians(90);#turn right at this speed
             self.p.publish(t)
 
-        #go forwards if there is nothing in front
-        elif incoming_data.ranges[320] > 1.0:
-            t = Twist()
-            t.linear.x = 0
-            self.p.publish(t) 
-            #calling goal searcher code
-            self.image_callback
-        elif incoming_data.ranges[320] > 1.0: #function that returns mask colours
-            t.linear.x = 0  
+        # #go forwards if there is nothing in front
+        # elif incoming_data.ranges[320] > 1.0:
+        #     t = Twist()
+        #     t.linear.x = 0.5
+        #     self.p.publish(t) 
+        #     #calling goal searcher code
+        #     self.image_callback
+        # elif incoming_data.ranges[320] > 1.0: #function that returns mask colours
+        #     t.linear.x = 0  
     
     #Looking for the goal 
     def image_callback(self, msg):
@@ -111,7 +111,7 @@ class Receiver:
             # of the contour (in blue)
             if a > 100.0:
                 cv2.drawContours(image, c, -1, (255, 0, 0), 3)
-        print('====')
+        #print('====')
         lower_yellow = numpy.array([10, 60, 70])
         upper_yellow = numpy.array([255, 255, 255])
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
@@ -123,7 +123,7 @@ class Receiver:
         mask[search_bot:h, 0:w] = 0
         M = cv2.moments(mask)  
        
-        #Look for yellow
+        #This never runs because Mask i always less than 0
         if M['m00'] > 0:
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
@@ -132,8 +132,13 @@ class Receiver:
             self.twist.linear.x = 0.5
             self.twist.angular.z = -float(err) / 30
             print self.twist.angular.z
-
+            print("moving... via moments")
+            self.cmd_vel_pub.publish(self.twist)    
+        else:#M is not greater than o  
+            self.twist.linear.x = 0.5
             self.cmd_vel_pub.publish(self.twist)
+            print("moving... w/o moments")
+
 
         
         cv2.imshow("window", image)
