@@ -40,21 +40,21 @@ class Receiver:
     #Obstacle avoidance using lasers
     def laser_callback(self, incoming_data):
         # print len(incoming_data.ranges) CHECK COLOUR BEFORE TURNING
-        if incoming_data.ranges[320] < 1.0:
+        if incoming_data.ranges[320] < 0.5:
             t = Twist()
             t.linear.x = 0
-            t.angular.z = radians(90);#turn right at this speed
+            t.angular.z = radians(90);#rotate right at this speed
+            print("Avoiding obstacle...")
             self.p.publish(t)
 
         # #go forwards if there is nothing in front
-        # elif incoming_data.ranges[320] > 1.0:
-        #     t = Twist()
-        #     t.linear.x = 0.5
-        #     self.p.publish(t) 
-        #     #calling goal searcher code
-        #     self.image_callback
-        # elif incoming_data.ranges[320] > 1.0: #function that returns mask colours
-        #     t.linear.x = 0  
+        elif incoming_data.ranges[320] > 1.0:
+             t = Twist()
+             t.linear.x = 0.5
+             self.p.publish(t) 
+             self.image_callback
+             print("Exploring....")
+
     
     #Looking for the goal 
     def image_callback(self, msg):
@@ -115,31 +115,45 @@ class Receiver:
         lower_yellow = numpy.array([10, 60, 70])
         upper_yellow = numpy.array([255, 255, 255])
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
+        
         mask = cv2.inRange(hsv,lower_green,upper_green)
         h, w, d = image.shape
         search_top = 3*h/4
         search_bot = 3*h/4 + 20
         mask[0:search_top, 0:w] = 0
         mask[search_bot:h, 0:w] = 0
-        M = cv2.moments(mask)  
-       
+        #create moments of all possible detections so i can check when one is detected
+        gM = cv2.moments(mask)  
+        rM = cv2.moments(mask)
+        bM = cv2.moments(mask)
         #This never runs because Mask i always less than 0
-        if M['m00'] > 0:
-            cx = int(M['m10']/M['m00'])
-            cy = int(M['m01']/M['m00'])
+        if gM['m00'] > 0:
+            print("goal detected!")
+            cx = int(gM['m10']/gM['m00'])
+            cy = int(gM['m01']/gM['m00'])
             cv2.circle(image, (cx, cy), 20, (0, 0, 255), -1)
             err = cx - w/2
             self.twist.linear.x = 0.5
-            self.twist.angular.z = -float(err) / 30
+            self.twist.angular.z = -float(err) / 100
             print self.twist.angular.z
             print("moving... via moments")
-            self.cmd_vel_pub.publish(self.twist)    
-        else:#M is not greater than o  
-            self.twist.linear.x = 0.5
-            self.cmd_vel_pub.publish(self.twist)
-            print("moving... w/o moments")
+            self.cmd_vel_pub.publish(self.twist) 
 
+        elif rM['m00'] > 0:
+            print("RED DETECTED")
+            print("EVASIVE MANEUVERS!!!!")
+        elif bM['m00'] > 0:
+            print("Land mark detected")
 
+        else:#M is not greater than 0 so the robot moves aimlessly without direction.  
+            #"moving... w/o moments")
+            return True
+
+    def robot_control():
+        #call image callback
+        self.image_callback(self,msg)
+        if self.image_callback() == True:
+            self.laser_callback(self,self.incoming_data.ranges[320])
         
         cv2.imshow("window", image)
         cv2.waitKey(3)
