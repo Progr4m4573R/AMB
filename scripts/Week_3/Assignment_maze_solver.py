@@ -116,16 +116,22 @@ class Receiver:
         upper_yellow = numpy.array([255, 255, 255])
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
         
-        mask = cv2.inRange(hsv,lower_green,upper_green)
+        green_mask = cv2.inRange(hsv,lower_green,upper_green)
+        red_mask = cv2.inRange(hsv,lower_red,upper_red)
+        blue_mask = cv2.inRange(hsv,lower_blue,upper_blue)
         h, w, d = image.shape
-        search_top = 3*h/4
-        search_bot = 3*h/4 + 20
-        mask[0:search_top, 0:w] = 0
-        mask[search_bot:h, 0:w] = 0
+        search_top = 1*h/8
+        search_bot = search_top + 20
+        green_mask[0:search_top, 0:w] = 0
+        green_mask[search_bot:h, 0:w] = 0
+        red_mask[0:search_top, 0:w] = 0
+        red_mask[search_bot:h, 0:w] = 0
+        blue_mask[0:search_top, 0:w] = 0
+        blue_mask[search_bot:h, 0:w] = 0
         #create moments of all possible detections so i can check when one is detected
-        gM = cv2.moments(mask)  
-        rM = cv2.moments(mask)
-        bM = cv2.moments(mask)
+        gM = cv2.moments(green_mask)  
+        rM = cv2.moments(red_mask)
+        bM = cv2.moments(blue_mask)
         #This never runs because Mask i always less than 0
         if gM['m00'] > 0:
             print("goal detected!")
@@ -142,6 +148,7 @@ class Receiver:
         elif rM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
+            
         elif bM['m00'] > 0:
             print("Land mark detected")
 
