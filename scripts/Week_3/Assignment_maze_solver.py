@@ -85,15 +85,6 @@ class Receiver:
         
         # Instead find the contours in the mask generated from the
         # HSV image.
-        _, hsv_contours, hierachy = cv2.findContours(
-            hsv_blue_thresh.copy(),#find contours in red squares
-            cv2.RETR_TREE,
-            cv2.CHAIN_APPROX_SIMPLE)
-
-        _, hsv_contours, hierachy = cv2.findContours(
-            hsv_red_thresh.copy(),#find contours in red squares
-            cv2.RETR_TREE,
-            cv2.CHAIN_APPROX_SIMPLE)
 
         _, hsv_contours, hierachy = cv2.findContours(
             hsv_green_thresh.copy(),#find contours in red squares
@@ -141,7 +132,7 @@ class Receiver:
         elif bM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
-            self.twist.angular.x = 0.5
+            self.twist.linear.x = 0
             self.twist.angular.z = radians(180)
         
         elif rM['m00'] > 0:
