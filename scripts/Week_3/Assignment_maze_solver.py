@@ -69,7 +69,7 @@ class Receiver:
         upper_red = numpy.array([255, 255, 255])#this too
 
         lower_blue = numpy.array([0, 200, 100])# detect blue
-        upper_blue = numpy.array([255, 255, 255])#this too
+        upper_blue = numpy.array([10, 255, 255])#this too
 
         #Create a threshold for detecting the colours in a certain range, compare to hsv for deciding what to do when something is detected.
         bgr_thresh = cv2.inRange(image,
@@ -148,7 +148,7 @@ class Receiver:
         elif rM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
-            
+
         elif bM['m00'] > 0:
             print("Land mark detected")
 
