@@ -67,7 +67,7 @@ class Receiver:
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)#converts that the robot sees to hsv
 
         lower_green = numpy.array([50, 100, 125])#detect green #hue, saturation and value,value has to be lower than 100 or image will be black
-        upper_green = numpy.array([255, 255, 255])#this too
+        upper_green = numpy.array([60, 255, 255])#this too
 
         lower_red = numpy.array([100, 100, 100])#detect red
         upper_red = numpy.array([255, 255, 255])#this too
@@ -136,8 +136,9 @@ class Receiver:
             self.twist.angular.z = radians(180)
         
         elif rM['m00'] > 0:
-            print("Land mark detected")
-
+            print("Land mark detected")#priorities turning left when a landmark is detected
+            self.twist.linear.x = 0.5
+            self.twist.angular.z = radians(45)
         else:#M is not greater than 0 so the robot moves aimlessly without direction.  
             #"moving... w/o moments")
             return True

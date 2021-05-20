@@ -26,8 +26,8 @@ class Follower:
         lower_red = numpy.array([100, 100, 100])#detect red
         upper_red = numpy.array([255, 255, 255])#this too
         lower_green = numpy.array([50, 100, 125])#detect green #hue, saturation and value,value has to be lower than 100 or image will be black
-        upper_green = numpy.array([255, 255, 255])#this too
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        upper_green = numpy.array([60, 255, 255])#this too
+        mask = cv2.inRange(hsv, lower_green, upper_green)
         cv2.bitwise_and(image, image, mask=mask)
         cv2.imshow("window", mask)
         cv2.waitKey(3)
