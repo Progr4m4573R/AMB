@@ -43,7 +43,7 @@ class Receiver:
         if incoming_data.ranges[320] < 0.5:
             t = Twist()
             t.linear.x = 0
-            t.angular.z = radians(90);#rotate right at this speed
+            t.angular.z = radians(45);#rotate right at this speed
             print("Avoiding obstacle...")
             self.p.publish(t)
 
@@ -112,22 +112,14 @@ class Receiver:
             if a > 100.0:
                 cv2.drawContours(image, c, -1, (255, 0, 0), 3)
         #print('====')
-        lower_yellow = numpy.array([10, 60, 70])
-        upper_yellow = numpy.array([255, 255, 255])
+
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
         
-        green_mask = cv2.inRange(hsv,lower_green,upper_green)
+        green_mask = cv2.inRange(hsv,lower_green, upper_green)
         red_mask = cv2.inRange(hsv,lower_red,upper_red)
         blue_mask = cv2.inRange(hsv,lower_blue,upper_blue)
         h, w, d = image.shape
-        search_top = 1*h/8
-        search_bot = search_top + 20
-        green_mask[0:search_top, 0:w] = 0
-        green_mask[search_bot:h, 0:w] = 0
-        red_mask[0:search_top, 0:w] = 0
-        red_mask[search_bot:h, 0:w] = 0
-        blue_mask[0:search_top, 0:w] = 0
-        blue_mask[search_bot:h, 0:w] = 0
+
         #create moments of all possible detections so i can check when one is detected
         gM = cv2.moments(green_mask)  
         rM = cv2.moments(red_mask)
@@ -148,7 +140,8 @@ class Receiver:
         elif rM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
-
+            self.twist.angular.x = 0
+            self.twist.angular.z = radians(180)
         elif bM['m00'] > 0:
             print("Land mark detected")
 
