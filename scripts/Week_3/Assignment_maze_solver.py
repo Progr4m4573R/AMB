@@ -41,36 +41,25 @@ class Receiver:
     #Obstacle avoidance using lasers
     def laser_callback(self, incoming_data):
         # print len(incoming_data.ranges) CHECK COLOUR BEFORE TURNING
-   
 
         if incoming_data.ranges[320] < 1.0:
 
-                t = Twist()
-                t.linear.x = 0
-                t.angular.z = radians(45);#rotate right at this speed
-                print("Turning left to avoid obstacle...")
-                self.p.publish(t)
-        if incoming_data.ranges[320] < 1.0 and:
-
-                t = Twist()
-                t.linear.x = 0
-                t.angular.z = radians(-45);#rotate right at this speed
-                print("Turning right to avoid obstacle...")
-                self.p.publish(t)
- 
-        # #go forwards if there is nothing in front
+            t = Twist()
+            t.linear.x = 0
+            t.angular.z = radians(45);#rotate right at this speed
+            print("Turning left to avoid obstacle...")
+            self.p.publish(t)
+                            
+        # #go forwards if there is nothing in front and priorities turning right
         elif incoming_data.ranges[320] > 1.0:
+            
+            t = Twist()
+            t.linear.x = 0.5
+            t.angular.z = radians(-25);#rotate right at this speed
+            self.p.publish(t) 
+            self.image_callback
+            print("Exploring....")
              
-             t = Twist()
-             t.linear.x = 0.5
-             self.p.publish(t) 
-             self.image_callback
-             print("Exploring....")
-             
-
-
-
-    
     #Looking for the goal 
     def image_callback(self, msg):
         cv2.namedWindow("window", 1)
@@ -152,7 +141,7 @@ class Receiver:
         elif bM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
-            self.twist.angular.x = 0
+            self.twist.angular.x = 0.5
             self.twist.angular.z = radians(180)
         
         elif rM['m00'] > 0:
