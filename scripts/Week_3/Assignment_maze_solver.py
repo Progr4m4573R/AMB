@@ -37,23 +37,38 @@ class Receiver:
 
         #use to make the robot move
         self.twist = Twist()
+
     #Obstacle avoidance using lasers
     def laser_callback(self, incoming_data):
         # print len(incoming_data.ranges) CHECK COLOUR BEFORE TURNING
-        if incoming_data.ranges[320] < 0.5:
-            t = Twist()
-            t.linear.x = 0
-            t.angular.z = radians(45);#rotate right at this speed
-            print("Avoiding obstacle...")
-            self.p.publish(t)
+   
 
+        if incoming_data.ranges[320] < 1.0:
+
+                t = Twist()
+                t.linear.x = 0
+                t.angular.z = radians(45);#rotate right at this speed
+                print("Turning left to avoid obstacle...")
+                self.p.publish(t)
+        if incoming_data.ranges[320] < 1.0 and:
+
+                t = Twist()
+                t.linear.x = 0
+                t.angular.z = radians(-45);#rotate right at this speed
+                print("Turning right to avoid obstacle...")
+                self.p.publish(t)
+ 
         # #go forwards if there is nothing in front
         elif incoming_data.ranges[320] > 1.0:
+             
              t = Twist()
              t.linear.x = 0.5
              self.p.publish(t) 
              self.image_callback
              print("Exploring....")
+             
+
+
 
     
     #Looking for the goal 
@@ -71,10 +86,6 @@ class Receiver:
         lower_blue = numpy.array([0, 200, 100])# detect blue
         upper_blue = numpy.array([10, 255, 255])#this too
 
-        #Create a threshold for detecting the colours in a certain range, compare to hsv for deciding what to do when something is detected.
-        bgr_thresh = cv2.inRange(image,
-                            numpy.array((200, 230, 230)),#lower
-                            numpy.array((255, 255, 255)))#upper
         #look for a hsv value between the ranges--------------------------------------------------------------
         #Set a threshold for detecting red
         hsv_red_thresh = cv2.inRange(hsv,lower_red,upper_red)
@@ -115,9 +126,9 @@ class Receiver:
 
         #Focus in on middle of line and move forwards while keeping a dot in the center of the line.
         
-        green_mask = cv2.inRange(hsv,lower_green, upper_green)
-        red_mask = cv2.inRange(hsv,lower_red,upper_red)
-        blue_mask = cv2.inRange(hsv,lower_blue,upper_blue)
+        green_mask = hsv_green_thresh
+        red_mask = hsv_red_thresh
+        blue_mask = hsv_blue_thresh
         h, w, d = image.shape
 
         #create moments of all possible detections so i can check when one is detected
@@ -130,6 +141,7 @@ class Receiver:
             cx = int(gM['m10']/gM['m00'])
             cy = int(gM['m01']/gM['m00'])
             cv2.circle(image, (cx, cy), 20, (0, 0, 255), -1)
+
             err = cx - w/2
             self.twist.linear.x = 0.5
             self.twist.angular.z = -float(err) / 100
@@ -137,12 +149,13 @@ class Receiver:
             print("moving... via moments")
             self.cmd_vel_pub.publish(self.twist) 
 
-        elif rM['m00'] > 0:
+        elif bM['m00'] > 0:
             print("RED DETECTED")
             print("EVASIVE MANEUVERS!!!!")
             self.twist.angular.x = 0
             self.twist.angular.z = radians(180)
-        elif bM['m00'] > 0:
+        
+        elif rM['m00'] > 0:
             print("Land mark detected")
 
         else:#M is not greater than 0 so the robot moves aimlessly without direction.  
@@ -157,6 +170,7 @@ class Receiver:
         
         cv2.imshow("window", image)
         cv2.waitKey(3)
+
 
 
 rospy.init_node('receiver')
